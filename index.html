@@ -58,6 +58,11 @@
             z-index: 20;
         }
 
+        .frame .top-bday-frame {
+            position: absolute;
+            top: 0;
+        }
+
         .frame .curtains {
             position: absolute;
             z-index: 1;
@@ -233,8 +238,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* justify-content: center; */
-            /* height: 100%; */
+            justify-content: center;
+            height: 100%;
             text-align: center;
             padding: 36px 26px;
             z-index: 1;
@@ -292,14 +297,17 @@
             position: relative;
             width: 100%;
             max-width: 300px;
-            min-height: 190px;
+            min-height: 200px;
             background: none;
             box-shadow: none;
-            display: flex;
-            /* align-items: center;
-            justify-content: center; */
             padding: 22px 22px;
             overflow: visible;
+        }
+
+        .wish-wrap {
+            width: 100%;
+            height: 100%;
+
         }
 
         .dust {
@@ -466,9 +474,11 @@
                 <div class="dust" style="top:8%; left:14%; background:var(--gold); animation-delay:0.4s;"></div>
                 <div class="dust" style="top:12%; left:85%; background:var(--ink-dark); animation-delay:1.8s;"></div>
                 <div class="dust" style="top:88%; left:20%; background:var(--ink-dark); animation-delay:2.6s;"></div>
-                <p class="wish" id="wish"
-                    aria-label="Wishing you a day as bright and wonderful as you are. May this new year of your life bring endless laughter, good health, and dreams that come true.">
-                </p>
+                <div class="wish-wrap">
+                    <p class="wish" id="wish"
+                        aria-label="Wishing you a day as bright and wonderful as you are. May this new year of your life bring endless laughter, good health, and dreams that come true.">
+                    </p>
+                </div>
                 <div class="spark" id="spark">
                     <svg viewBox="0 0 60 140" xmlns="http://www.w3.org/2000/svg">
                         <defs>
