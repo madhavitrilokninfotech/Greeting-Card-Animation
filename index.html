@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --cream: #FFF8EF;
+            --plum: #3B2A45;
+            --coral: #FF6F59;
+            --teal: #3FA7A2;
+            --gold: #E8C170;
+            --gold-bright: #F6DFA0;
+            --ink-dark: #1B1420;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 15% 15%, rgba(255, 111, 89, 0.18), transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(63, 167, 162, 0.20), transparent 45%),
+                var(--plum);
+            font-family: 'Spectral', serif;
+        }
+
+        .frame {
+            position: relative;
+            width: 100%;
+            height: 100dvh;
+            background: var(--cream);
+            box-shadow: 0 40px 80px -25px rgba(0, 0, 0, 0.55);
+            overflow: hidden;
+            perspective: 1400px;
+        }
+
+        .frame::before {
+            content: '';
+            position: absolute;
+            inset: 14px;
+            /* border: 1.5px solid rgba(59, 42, 69, 0.14); */
+            border-radius: 16px;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .frame .curtains {
+            position: absolute;
+            z-index: 1;
+            top: 0px;
+            width: 140px;
+            /* width: clamp(110px, 25vw, 140px); */
+        }
+
+        .frame .curtains.img-left {
+            left: 0px;
+        }
+
+        .frame .curtains.img-right {
+            right: 0px;
+        }
+
+        .frame .frame-img {
+            display: block;
+            width: calc(100% - 40px);
+            margin: 0 auto;
+        }
+
+        .frame .frame-img.two {
+            width: calc(100% - 100px);
+            transform: translateY(-16px);
+        }
+
+        .frame .gift-frame {
+            position: absolute;
+            z-index: 2;
+            bottom: 0;
+            width: 26vw;
+        }
+
+        .frame .gift-frame.img-left {
+            left: 0;
+        }
+
+        .frame .gift-frame.img-right {
+            right: 0;
+        }
+
+        .frame .gift-bottom {
+            position: absolute;
+            bottom: 0;
+            margin: 0 auto;
+            text-align: center;
+            height: auto;
+            width: 200px;
+            right: 0;
+            left: 0;
+        }
+
+        .book-page {
+            position: absolute;
+            inset: 0;
+            z-index: 15;
+            background: var(--cream);
+            transform-origin: 0% 50%;
+            backface-visibility: hidden;
+            box-shadow: 10px 0 34px -12px rgba(0, 0, 0, 0.4);
+            animation: pageTurn 3.0s cubic-bezier(0.45, 0, 0.15, 1) 0.5s forwards;
+        }
+
+        .book-page::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 20px;
+            background: linear-gradient(90deg, rgba(59, 42, 69, 0.28), transparent);
+            z-index: 2;
+        }
+
+        .book-page::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.18) 55%, rgba(0, 0, 0, 0.4) 100%);
+            opacity: 0;
+            animation: curlShade 3.3s ease 0.5s forwards;
+        }
+
+        @keyframes pageTurn {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(-172deg);
+            }
+        }
+
+        @keyframes curlShade {
+            0% {
+                opacity: 0;
+            }
+
+            45% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .book-page.done {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .cover-face {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            padding: 0 30px;
+        }
+
+        .cover-icon {
+            font-size: 2.4rem;
+            animation: iconPop 0.6s ease 0.05s backwards;
+        }
+
+        @keyframes iconPop {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .cover-title {
+            font-family: 'Spectral', serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--plum);
+            opacity: 0.75;
+            margin: 0;
+        }
+
+        .confetti {
+            position: absolute;
+            opacity: 0.5;
+            animation: drift 9s ease-in-out infinite;
+        }
+
+        @keyframes drift {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-14px) rotate(20deg);
+            }
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* justify-content: center; */
+            /* height: 100%; */
+            text-align: center;
+            padding: 36px 26px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .headline {
+            font-family: 'Spectral', serif;
+            font-weight: 700;
+            font-size: clamp(1.6rem, 7.5vw, 2.3rem);
+            color: var(--plum);
+            line-height: 1.15;
+            margin-bottom: 1.2rem;
+        }
+
+        .headline .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: letterIn 0.7s ease forwards;
+        }
+
+        .headline .word-gap {
+            display: inline-block;
+            width: 0.28em;
+        }
+
+        .headline .word-birthday {
+            color: var(--coral);
+        }
+
+        @keyframes letterIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .divider {
+            /* width: 40px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 2px; */
+            opacity: 0;
+            animation: fadeSimple 0.8s ease forwards;
+        }
+
+        @keyframes fadeSimple {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .wish-panel {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            min-height: 190px;
+            background: none;
+            box-shadow: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 22px 18px;
+            overflow: visible;
+        }
+
+        .dust {
+            position: absolute;
+            display: none;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--gold);
+            opacity: 0;
+            animation: twinkle 3.6s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .wish {
+            position: relative;
+            font-family: 'Alex Brush', cursive;
+            font-size: clamp(16px, 3.5vw, 20px);
+            line-height: 1.5;
+            color: var(--coral);
+            margin: 0;
+        }
+
+        .wish .word {
+            display: inline-block;
+            padding: 0 2px;
+        }
+
+        .wish .letter {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(4px);
+            transform: scale(1.5);
+            text-shadow:
+                0 0 6px rgba(255, 111, 89, 0.9),
+                0 0 14px rgba(255, 111, 89, 0.6);
+            animation: inkIn 0.65s ease forwards;
+        }
+
+        @keyframes inkIn {
+            0% {
+                opacity: 0;
+                filter: blur(4px);
+                transform: scale(1.5);
+            }
+
+            55% {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1.05);
+            }
+
+            100% {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1);
+                text-shadow:
+                    0 0 3px rgba(246, 223, 160, 0.55),
+                    0 0 8px rgba(232, 193, 112, 0.35);
+            }
+        }
+
+        /* the "pen" that writes the wish — a feather quill, matching the reference clip */
+        .spark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 56px;
+            /* vertical center */
+            transform: translate(-50%, -50%) rotate(-28deg);
+            transform-origin: 50% 50%;
+            filter:
+                drop-shadow(0 0 5px rgba(255, 111, 89, 0.85)) drop-shadow(0 0 10px rgba(255, 111, 89, 0.5));
+            pointer-events: none;
+            opacity: 0;
+            transition:
+                left 0.14s ease-out,
+                top 0.14s ease-out,
+                opacity 0.6s ease;
+        }
+
+        .spark svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .headline .letter,
+            .divider,
+            .confetti,
+            .dust,
+            .cover-icon {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            .wish .letter {
+                animation: none !important;
+                opacity: 1 !important;
+                filter: none !important;
+                transform: none !important;
+            }
+
+            .spark {
+                display: none !important;
+            }
+
+            .book-page,
+            .book-page::after {
+                animation: none !important;
+                opacity: 0 !important;
+            }
+        }
+
+        @media screen and (min-width:575px) {
+            .frame {
+                width: min(92vw, 400px);
+                height: auto;
+                aspect-ratio: 9 / 16;
+                border-radius: 26px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .frame .gift-frame {
+                width: 7vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="frame" id="frame">
+        <div class="confetti" style="top:6%; left:10%; animation-delay:0s;"></div>
+        <div class="confetti" style="top:10%; left:82%; animation-delay:1.2s;"></div>
+
+        <img src="./hb-left.png" class="curtains img-left" alt="">
+        <img src="./hb-right.png" class="curtains img-right" alt="">
+
+        <div class="top-bday-frame">
+            <img src="./bday-frame1.png" class="frame-img one" alt="Bday Frame">
+            <img src="./bday-frame2.png" class="frame-img two" alt="Bday Frame">
+        </div>
+
+        <img src="./gift-frame-left.png" class="gift-frame img-left" alt="">
+        <img src="./gift-frame-right.png" class="gift-frame img-right" alt="">
+
+        <div class="content">
+            <h1 class="headline" id="headline" aria-label="Happy Birthday"></h1>
+            <div class="divider" id="divider"></div>
+
+            <div class="wish-panel" id="wishPanel">
+                <div class="dust" style="top:8%; left:14%; background:var(--gold); animation-delay:0.4s;"></div>
+                <div class="dust" style="top:12%; left:85%; background:var(--ink-dark); animation-delay:1.8s;"></div>
+                <div class="dust" style="top:88%; left:20%; background:var(--ink-dark); animation-delay:2.6s;"></div>
+                <p class="wish" id="wish"
+                    aria-label="Wishing you a day as bright and wonderful as you are. May this new year of your life bring endless laughter, good health, and dreams that come true.">
+                </p>
+                <div class="spark" id="spark">
+                    <svg viewBox="0 0 60 140" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="quillGrad2" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#FF8A78"></stop>
+                                <stop offset="1" stop-color="#FF6F59"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path d="M30 4 C 52 20 56 62 40 100 C 33 116 18 126 8 138 C 5 118 3 96 10 78 C 1 58 4 28 30 4 Z"
+                            fill="url(#quillGrad2)" stroke="#FF6F59" stroke-width="1.2">
+                        </path>
+                        <path d="M30 6 L 9 132" stroke="#FF6F59" stroke-width="1" opacity="1">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <img src="./gift-bottom-img.png" class="gift-bottom" alt="Gift Bottom">
+
+        <!-- closed book-style cover page: turns open slowly first, before anything inside animates -->
+        <div class="book-page" id="bookPage">
+            <div class="cover-face">
+                <span class="cover-icon">🎂</span>
+                <p class="cover-title">A little birthday surprise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function fadeReveal(
+            container,
+            text,
+            { startDelay = 0, letterDelay = 0.07, wordClassMap = {} } = {}
+        ) {
+            container.innerHTML = '';
+
+            const words = text.split(' ');
+            let elapsed = startDelay;
+
+            words.forEach((word, wIndex) => {
+
+                // Create word wrapper
+                const wordWrap = document.createElement('span');
+                wordWrap.className = 'word';
+
+                const wordClass = wordClassMap[word.toLowerCase()] || '';
+
+                [...word].forEach(ch => {
+
+                    const span = document.createElement('span');
+
+                    span.className =
+                        'letter' + (wordClass ? ' ' + wordClass : '');
+
+                    span.textContent = ch;
+                    span.style.animationDelay = elapsed.toFixed(3) + 's';
+
+                    wordWrap.appendChild(span);
+
+                    elapsed += letterDelay;
+                });
+
+                container.appendChild(wordWrap);
+
+                // Add space between words
+                if (wIndex < words.length - 1) {
+
+                    const gap = document.createElement('span');
+
+                    gap.className = 'word-gap';
+                    gap.innerHTML = '&nbsp;';
+
+                    container.appendChild(gap);
+
+                    elapsed += letterDelay;
+                }
+            });
+
+            return elapsed;
+        }
+
+
+        function inkWriter(
+            panel,
+            textEl,
+            sparkEl,
+            text,
+            { startDelay = 0, charDelay = 70 } = {}
+        ) {
+            textEl.innerHTML = '';
+
+            const words = text.split(' ');
+
+            let wordIndex = 0;
+            let charIndex = 0;
+            let currentWord = null;
+
+
+            function positionSparkOn(span, isSpace = false) {
+
+                const panelRect = panel.getBoundingClientRect();
+                const charRect = span.getBoundingClientRect();
+
+                // Keep the quill tip close to the baseline of the character.
+                const targetLeft =
+                    charRect.right - panelRect.left - 4;
+
+                const targetTop =
+                    charRect.bottom - panelRect.top - 43;
+
+                sparkEl.style.left = targetLeft + 'px';
+                sparkEl.style.top = targetTop + 'px';
+                sparkEl.style.opacity = '1';
+
+
+                // During spaces, make the quill glide naturally
+                // instead of looking like it is pressing down to write.
+                if (isSpace) {
+                    sparkEl.classList.remove('writing');
+                } else {
+                    sparkEl.classList.add('writing');
+                }
+            }
+
+
+            function step() {
+
+                // Writing completed
+                if (wordIndex >= words.length) {
+
+                    sparkEl.classList.remove('writing');
+
+                    // Let the quill settle and fade away.
+                    setTimeout(() => {
+
+                        sparkEl.style.opacity = '0';
+
+                        setTimeout(() => {
+                            sparkEl.classList.add('d-none');
+                        }, 650);
+
+                    }, 300);
+
+                    return;
+                }
+
+
+                const word = words[wordIndex];
+
+
+                // Create .word wrapper at the beginning of every word.
+                if (charIndex === 0) {
+
+                    currentWord = document.createElement('span');
+
+                    currentWord.className = 'word';
+
+                    textEl.appendChild(currentWord);
+                }
+
+
+                // Current character
+                const ch = word.charAt(charIndex);
+
+
+                // Create .letter wrapper
+                const span = document.createElement('span');
+
+                span.className = 'letter';
+
+                span.textContent = ch;
+
+
+                // Add letter inside current .word
+                currentWord.appendChild(span);
+
+                // Move quill to the current letter
+                positionSparkOn(span);
+
+                charIndex++;
+
+                // Current word completed
+                if (charIndex >= word.length) {
+
+                    // Move to next word
+                    wordIndex++;
+                    charIndex = 0;
+
+                    setTimeout(() => {
+                        sparkEl.classList.remove('writing');
+                        step();
+                    }, charDelay * 1.15);
+
+                } else {
+                    const pause =
+                        /[.,!?]/.test(ch)
+                            ? charDelay * 4
+                            : charDelay;
+
+                    setTimeout(step, pause);
+                }
+            }
+
+            setTimeout(step, startDelay);
+        }
+
+        const bookPage = document.getElementById('bookPage');
+        const headline = document.getElementById('headline');
+        const divider = document.getElementById('divider');
+        const wishPanel = document.getElementById('wishPanel');
+        const wish = document.getElementById('wish');
+        const spark = document.getElementById('spark');
+
+
+        const PAGE_DELAY_MS = 500;
+
+        // Page turn duration
+        const PAGE_DURATION_MS = 1000;
+
+        // Small settle buffer
+        const PAGE_TOTAL_MS =
+            PAGE_DELAY_MS +
+            PAGE_DURATION_MS +
+            200;
+
+
+        function startInsideContent() {
+            const headlineDuration = fadeReveal(
+                headline,
+                'Happy Birthday',
+                {
+                    startDelay: 0.1,
+                    letterDelay: 0.07,
+                    wordClassMap: {
+                        birthday: 'word-birthday'
+                    }
+                }
+            );
+            divider.style.animationDelay =
+                (headlineDuration + 0.2) + 's';
+
+            inkWriter(
+                wishPanel,
+                wish,
+                spark,
+                'Wishing you a day as bright and wonderful as you are. May this new year of your life bring endless laughter, good health, and dreams that come true.',
+                {
+                    startDelay: (headlineDuration + 0.6) * 1000,
+                    charDelay: 70
+                }
+            );
+        }
+
+        setTimeout(() => {
+
+            bookPage.classList.add('done');
+
+            startInsideContent();
+
+        }, PAGE_TOTAL_MS);
+
+    </script>
+
+
+</body>
+
+</html>
