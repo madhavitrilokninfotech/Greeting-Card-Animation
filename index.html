@@ -89,7 +89,7 @@
             position: absolute;
             z-index: 2;
             bottom: 0;
-            width: 26vw;
+            width: calc(100% - 73%);
         }
 
         .frame .gift-frame.img-left {
@@ -296,9 +296,9 @@
             background: none;
             box-shadow: none;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 22px 18px;
+            /* align-items: center;
+            justify-content: center; */
+            padding: 22px 22px;
             overflow: visible;
         }
 
@@ -373,7 +373,6 @@
             }
         }
 
-        /* the "pen" that writes the wish — a feather quill, matching the reference clip */
         .spark {
             position: absolute;
             top: 50%;
@@ -438,10 +437,6 @@
                 border-radius: 26px;
                 border: 1px solid rgba(255, 255, 255, 0.08);
             }
-
-            .frame .gift-frame {
-                width: 7vw;
-            }
         }
     </style>
 </head>
@@ -464,7 +459,7 @@
         <img src="./images/gift-frame-right.png" class="gift-frame img-right" alt="">
 
         <div class="content">
-            <h1 class="headline" id="headline" aria-label="Happy Birthday"></h1>
+            <!-- <h1 class="headline" id="headline" aria-label="Happy Birthday"></h1> -->
             <div class="divider" id="divider"></div>
 
             <div class="wish-panel" id="wishPanel">
@@ -507,30 +502,39 @@
         function fadeReveal(
             container,
             text,
-            { startDelay = 0, letterDelay = 0.07, wordClassMap = {} } = {}
+            {
+                startDelay = 0,
+                letterDelay = 0.07,
+                wordClassMap = {}
+            } = {}
         ) {
+            if (!container) {
+                return startDelay;
+            }
+
             container.innerHTML = '';
 
             const words = text.split(' ');
             let elapsed = startDelay;
 
             words.forEach((word, wIndex) => {
-
-                // Create word wrapper
                 const wordWrap = document.createElement('span');
                 wordWrap.className = 'word';
 
-                const wordClass = wordClassMap[word.toLowerCase()] || '';
+                const wordClass =
+                    wordClassMap[word.toLowerCase()] || '';
 
                 [...word].forEach(ch => {
-
                     const span = document.createElement('span');
 
                     span.className =
-                        'letter' + (wordClass ? ' ' + wordClass : '');
+                        'letter' +
+                        (wordClass ? ' ' + wordClass : '');
 
                     span.textContent = ch;
-                    span.style.animationDelay = elapsed.toFixed(3) + 's';
+
+                    span.style.animationDelay =
+                        elapsed.toFixed(3) + 's';
 
                     wordWrap.appendChild(span);
 
@@ -539,9 +543,7 @@
 
                 container.appendChild(wordWrap);
 
-                // Add space between words
                 if (wIndex < words.length - 1) {
-
                     const gap = document.createElement('span');
 
                     gap.className = 'word-gap';
@@ -562,9 +564,20 @@
             textEl,
             sparkEl,
             text,
-            { startDelay = 0, charDelay = 70 } = {}
+            {
+                startDelay = 0,
+                charDelay = 70
+            } = {}
         ) {
+            if (!panel || !textEl || !sparkEl) {
+                return;
+            }
+
             textEl.innerHTML = '';
+
+            sparkEl.classList.remove('d-none');
+            sparkEl.classList.remove('writing');
+            sparkEl.style.opacity = '0';
 
             const words = text.split(' ');
 
@@ -573,93 +586,85 @@
             let currentWord = null;
 
 
-            function positionSparkOn(span, isSpace = false) {
+            function positionSparkOn(span) {
+                if (!span || !panel || !sparkEl) {
+                    return;
+                }
 
-                const panelRect = panel.getBoundingClientRect();
-                const charRect = span.getBoundingClientRect();
+                const panelRect =
+                    panel.getBoundingClientRect();
 
-                // Keep the quill tip close to the baseline of the character.
+                const charRect =
+                    span.getBoundingClientRect();
+
                 const targetLeft =
-                    charRect.right - panelRect.left - 4;
+                    charRect.right -
+                    panelRect.left -
+                    4;
 
                 const targetTop =
-                    charRect.bottom - panelRect.top - 43;
+                    charRect.bottom -
+                    panelRect.top -
+                    43;
 
-                sparkEl.style.left = targetLeft + 'px';
-                sparkEl.style.top = targetTop + 'px';
+                sparkEl.style.left =
+                    targetLeft + 'px';
+
+                sparkEl.style.top =
+                    targetTop + 'px';
+
                 sparkEl.style.opacity = '1';
 
+                sparkEl.classList.add('writing');
+            }
 
-                // During spaces, make the quill glide naturally
-                // instead of looking like it is pressing down to write.
-                if (isSpace) {
-                    sparkEl.classList.remove('writing');
-                } else {
-                    sparkEl.classList.add('writing');
-                }
+
+            function finishWriting() {
+                sparkEl.classList.remove('writing');
+
+                setTimeout(() => {
+                    sparkEl.style.opacity = '0';
+
+                    setTimeout(() => {
+                        sparkEl.classList.add('d-none');
+                    }, 650);
+                }, 300);
             }
 
 
             function step() {
-
-                // Writing completed
                 if (wordIndex >= words.length) {
-
-                    sparkEl.classList.remove('writing');
-
-                    // Let the quill settle and fade away.
-                    setTimeout(() => {
-
-                        sparkEl.style.opacity = '0';
-
-                        setTimeout(() => {
-                            sparkEl.classList.add('d-none');
-                        }, 650);
-
-                    }, 300);
-
+                    finishWriting();
                     return;
                 }
 
-
                 const word = words[wordIndex];
 
-
-                // Create .word wrapper at the beginning of every word.
                 if (charIndex === 0) {
-
-                    currentWord = document.createElement('span');
+                    currentWord =
+                        document.createElement('span');
 
                     currentWord.className = 'word';
 
                     textEl.appendChild(currentWord);
                 }
 
+                const ch =
+                    word.charAt(charIndex);
 
-                // Current character
-                const ch = word.charAt(charIndex);
-
-
-                // Create .letter wrapper
-                const span = document.createElement('span');
+                const span =
+                    document.createElement('span');
 
                 span.className = 'letter';
-
                 span.textContent = ch;
 
-
-                // Add letter inside current .word
                 currentWord.appendChild(span);
 
-                // Move quill to the current letter
                 positionSparkOn(span);
 
                 charIndex++;
 
-                // Current word completed
                 if (charIndex >= word.length) {
-
-                    // Move to next word
                     wordIndex++;
                     charIndex = 0;
 
@@ -681,20 +686,30 @@
             setTimeout(step, startDelay);
         }
 
-        const bookPage = document.getElementById('bookPage');
-        const headline = document.getElementById('headline');
-        const divider = document.getElementById('divider');
-        const wishPanel = document.getElementById('wishPanel');
-        const wish = document.getElementById('wish');
-        const spark = document.getElementById('spark');
+
+        const bookPage =
+            document.getElementById('bookPage');
+
+        const headline =
+            document.getElementById('headline');
+
+        const divider =
+            document.getElementById('divider');
+
+        const wishPanel =
+            document.getElementById('wishPanel');
+
+        const wish =
+            document.getElementById('wish');
+
+        const spark =
+            document.getElementById('spark');
 
 
         const PAGE_DELAY_MS = 500;
 
-        // Page turn duration
         const PAGE_DURATION_MS = 1000;
 
-        // Small settle buffer
         const PAGE_TOTAL_MS =
             PAGE_DELAY_MS +
             PAGE_DURATION_MS +
@@ -702,40 +717,57 @@
 
 
         function startInsideContent() {
-            const headlineDuration = fadeReveal(
-                headline,
-                'Happy Birthday',
-                {
-                    startDelay: 0.1,
-                    letterDelay: 0.07,
-                    wordClassMap: {
-                        birthday: 'word-birthday'
-                    }
-                }
-            );
-            divider.style.animationDelay =
-                (headlineDuration + 0.2) + 's';
 
-            inkWriter(
-                wishPanel,
-                wish,
-                spark,
-                'Wishing you a day as bright and wonderful as you are. May this new year of your life bring endless laughter, good health, and dreams that come true.',
-                {
-                    startDelay: (headlineDuration + 0.6) * 1000,
-                    charDelay: 70
-                }
-            );
+            if (headline) {
+                fadeReveal(
+                    headline,
+                    'Happy Birthday',
+                    {
+                        startDelay: 0.1,
+                        letterDelay: 0.07,
+                        wordClassMap: {
+                            birthday: 'word-birthday'
+                        }
+                    }
+                );
+            }
+
+            if (divider) {
+                divider.style.animationDelay = '1.2s';
+            }
+
+            if (wishPanel && wish && spark) {
+                inkWriter(
+                    wishPanel,
+                    wish,
+                    spark,
+                    'Wishing you a day as bright and wonderful as you are. May this new year of your life bring endless laughter, good health, and dreams that come true.',
+                    {
+                        startDelay: 500,
+                        charDelay: 70
+                    }
+                );
+            }
         }
 
-        setTimeout(() => {
 
-            bookPage.classList.add('done');
+        function startBirthdayAnimation() {
+            if (bookPage) {
+                bookPage.classList.add('done');
+            }
 
             startInsideContent();
+        }
 
-        }, PAGE_TOTAL_MS);
 
+        if (bookPage) {
+            setTimeout(
+                startBirthdayAnimation,
+                PAGE_TOTAL_MS
+            );
+        } else {
+            startBirthdayAnimation();
+        }
     </script>
 
 
