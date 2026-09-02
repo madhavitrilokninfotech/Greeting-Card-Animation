@@ -38,6 +38,33 @@
             font-family: 'Spectral', serif;
         }
 
+        .frame-scale {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center center;
+            transform: scale(0);
+            animation: frameScaleIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+        }
+
+        @keyframes frameScaleIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            60% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         .frame {
             position: relative;
             width: 100%;
@@ -95,14 +122,43 @@
             z-index: 2;
             bottom: 0;
             width: calc(100% - 73%);
+            opacity: 0;
         }
 
         .frame .gift-frame.img-left {
             left: 0;
+            transform: translateX(-50px);
+            animation: giftFrameFadeLeft 1.2s cubic-bezier(0.22, 1, 0.36, 1) 3.1s forwards;
         }
 
         .frame .gift-frame.img-right {
             right: 0;
+            transform: translateX(50px);
+            animation: giftFrameFadeRight 1.2s cubic-bezier(0.22, 1, 0.36, 1) 3.1s forwards;
+        }
+
+        @keyframes giftFrameFadeLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes giftFrameFadeRight {
+            0% {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .frame .gift-bottom {
@@ -114,6 +170,21 @@
             width: 200px;
             right: 0;
             left: 0;
+            opacity: 0;
+            transform: translateY(80px);
+            animation: giftBottomFadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) 3.1s forwards;
+        }
+
+        @keyframes giftBottomFadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(80px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .book-page {
@@ -124,7 +195,7 @@
             transform-origin: 0% 50%;
             backface-visibility: hidden;
             box-shadow: 10px 0 34px -12px rgba(0, 0, 0, 0.4);
-            animation: pageTurn 3.0s cubic-bezier(0.45, 0, 0.15, 1) 0.5s forwards;
+            animation: pageTurn 3.0s cubic-bezier(0.45, 0, 0.15, 1) 1.2s forwards;
         }
 
         .book-page::before {
@@ -144,7 +215,7 @@
             inset: 0;
             background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.18) 55%, rgba(0, 0, 0, 0.4) 100%);
             opacity: 0;
-            animation: curlShade 3.3s ease 0.5s forwards;
+            animation: curlShade 3.3s ease 1.8s forwards;
         }
 
         @keyframes pageTurn {
@@ -192,7 +263,15 @@
 
         .cover-icon {
             font-size: 2.4rem;
+            width: 100px;
+            height: 100px;
             animation: iconPop 0.6s ease 0.05s backwards;
+        }
+
+        .cover-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         @keyframes iconPop {
@@ -242,8 +321,16 @@
             height: 100%;
             text-align: center;
             padding: 36px 26px;
-            z-index: 1;
             position: relative;
+        }
+
+        .content::before {
+            background: url("./images/hb-bg-pattern.png") center / cover no-repeat;
+            content: "";
+            inset: 0;
+            position: absolute;
+            z-index: -1;
+            opacity: .3;
         }
 
         .headline {
@@ -409,11 +496,14 @@
 
         @media (prefers-reduced-motion: reduce) {
 
+            .frame-scale,
             .headline .letter,
             .divider,
             .confetti,
             .dust,
-            .cover-icon {
+            .cover-icon,
+            .gift-frame,
+            .gift-bottom {
                 animation: none !important;
                 opacity: 1 !important;
                 transform: none !important;
@@ -451,59 +541,66 @@
 
 <body>
 
-    <div class="frame" id="frame">
-        <div class="confetti" style="top:6%; left:10%; animation-delay:0s;"></div>
-        <div class="confetti" style="top:10%; left:82%; animation-delay:1.2s;"></div>
+    <div class="frame-scale">
+        <div class="frame" id="frame">
+            <div class="confetti" style="top:6%; left:10%; animation-delay:0s;"></div>
+            <div class="confetti" style="top:10%; left:82%; animation-delay:1.2s;"></div>
 
-        <img src="./images/hb-left.png" class="curtains img-left" alt="">
-        <img src="./images/hb-right.png" class="curtains img-right" alt="">
+            <img src="./images/hb-left.png" class="curtains img-left" alt="">
+            <img src="./images/hb-right.png" class="curtains img-right" alt="">
 
-        <div class="top-bday-frame">
-            <img src="./images/bday-frame1.png" class="frame-img one" alt="Bday Frame">
-            <img src="./images/bday-frame2.png" class="frame-img two" alt="Bday Frame">
-        </div>
+            <div class="top-bday-frame">
+                <img src="./images/bday-frame1.png" class="frame-img one" alt="Bday Frame">
+                <img src="./images/bday-frame2.png" class="frame-img two" alt="Bday Frame">
+            </div>
 
-        <img src="./images/gift-frame-left.png" class="gift-frame img-left" alt="">
-        <img src="./images/gift-frame-right.png" class="gift-frame img-right" alt="">
+            <img src="./images/gift-frame-left.png" class="gift-frame img-left" alt="">
+            <img src="./images/gift-frame-right.png" class="gift-frame img-right" alt="">
 
-        <div class="content">
-            <!-- <h1 class="headline" id="headline" aria-label="Happy Birthday"></h1> -->
-            <div class="divider" id="divider"></div>
+            <div class="content">
+                <!-- <h1 class="headline" id="headline" aria-label="Happy Birthday"></h1> -->
+                <div class="divider" id="divider"></div>
 
-            <div class="wish-panel" id="wishPanel">
-                <div class="dust" style="top:8%; left:14%; background:var(--gold); animation-delay:0.4s;"></div>
-                <div class="dust" style="top:12%; left:85%; background:var(--ink-dark); animation-delay:1.8s;"></div>
-                <div class="dust" style="top:88%; left:20%; background:var(--ink-dark); animation-delay:2.6s;"></div>
-                <div class="wish-wrap">
-                    <p class="wish" id="wish"
-                        aria-label="Wishing you a day as bright and wonderful as you are. May this new year of your life bring endless laughter, good health, and dreams that come true.">
-                    </p>
-                </div>
-                <div class="spark" id="spark">
-                    <svg viewBox="0 0 60 140" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="quillGrad2" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0" stop-color="#FF8A78"></stop>
-                                <stop offset="1" stop-color="#FF6F59"></stop>
-                            </linearGradient>
-                        </defs>
-                        <path d="M30 4 C 52 20 56 62 40 100 C 33 116 18 126 8 138 C 5 118 3 96 10 78 C 1 58 4 28 30 4 Z"
-                            fill="url(#quillGrad2)" stroke="#FF6F59" stroke-width="1.2">
-                        </path>
-                        <path d="M30 6 L 9 132" stroke="#FF6F59" stroke-width="1" opacity="1">
-                        </path>
-                    </svg>
+                <div class="wish-panel" id="wishPanel">
+                    <div class="dust" style="top:8%; left:14%; background:var(--gold); animation-delay:0.4s;"></div>
+                    <div class="dust" style="top:12%; left:85%; background:var(--ink-dark); animation-delay:1.8s;">
+                    </div>
+                    <div class="dust" style="top:88%; left:20%; background:var(--ink-dark); animation-delay:2.6s;">
+                    </div>
+                    <div class="wish-wrap">
+                        <p class="wish" id="wish"
+                            aria-label="Wishing you a day as bright and wonderful as you are. May this new year of your life bring endless laughter, good health, and dreams that come true.">
+                        </p>
+                    </div>
+                    <div class="spark" id="spark">
+                        <svg viewBox="0 0 60 140" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="quillGrad2" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#FF8A78"></stop>
+                                    <stop offset="1" stop-color="#FF6F59"></stop>
+                                </linearGradient>
+                            </defs>
+                            <path
+                                d="M30 4 C 52 20 56 62 40 100 C 33 116 18 126 8 138 C 5 118 3 96 10 78 C 1 58 4 28 30 4 Z"
+                                fill="url(#quillGrad2)" stroke="#FF6F59" stroke-width="1.2">
+                            </path>
+                            <path d="M30 6 L 9 132" stroke="#FF6F59" stroke-width="1" opacity="1">
+                            </path>
+                        </svg>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <img src="./images/gift-bottom-img.png" class="gift-bottom" alt="Gift Bottom">
+            <img src="./images/gift-bottom-img.png" class="gift-bottom" alt="Gift Bottom">
 
-        <!-- closed book-style cover page: turns open slowly first, before anything inside animates -->
-        <div class="book-page" id="bookPage">
-            <div class="cover-face">
-                <span class="cover-icon">🎂</span>
-                <p class="cover-title">A little birthday surprise</p>
+            <!-- closed book-style cover page: turns open slowly first, before anything inside animates -->
+            <div class="book-page" id="bookPage">
+                <div class="cover-face">
+                    <span class="cover-icon">
+                        <img src="./images/cake.png" alt="cake">
+                    </span>
+                    <p class="cover-title">A little birthday surprise</p>
+                </div>
             </div>
         </div>
     </div>
@@ -697,33 +794,30 @@
         }
 
 
-        const bookPage =
-            document.getElementById('bookPage');
-
-        const headline =
-            document.getElementById('headline');
-
-        const divider =
-            document.getElementById('divider');
-
-        const wishPanel =
-            document.getElementById('wishPanel');
-
-        const wish =
-            document.getElementById('wish');
-
-        const spark =
-            document.getElementById('spark');
+        const bookPage = document.getElementById('bookPage');
+        const headline = document.getElementById('headline');
+        const divider = document.getElementById('divider');
+        const wishPanel = document.getElementById('wishPanel');
+        const wish = document.getElementById('wish');
+        const spark = document.getElementById('spark');
+        const giftBottom = document.getElementById('giftBottom');
 
 
-        const PAGE_DELAY_MS = 500;
+        const FRAME_SCALE_DELAY_MS = 300;
+        const FRAME_SCALE_DURATION_MS = 1000;
+        const FRAME_SCALE_PAUSE_MS = 300;
+
+        const PAGE_DELAY_MS =
+            FRAME_SCALE_DELAY_MS +
+            FRAME_SCALE_DURATION_MS +
+            FRAME_SCALE_PAUSE_MS;
 
         const PAGE_DURATION_MS = 1000;
 
         const PAGE_TOTAL_MS =
             PAGE_DELAY_MS +
             PAGE_DURATION_MS +
-            200;
+            300;
 
 
         function startInsideContent() {
@@ -742,10 +836,6 @@
                 );
             }
 
-            if (divider) {
-                divider.style.animationDelay = '1.2s';
-            }
-
             if (wishPanel && wish && spark) {
                 inkWriter(
                     wishPanel,
@@ -753,13 +843,12 @@
                     spark,
                     'Wishing you a day as bright and wonderful as you are. May this new year of your life bring endless laughter, good health, and dreams that come true.',
                     {
-                        startDelay: 500,
-                        charDelay: 70
+                        startDelay: 0,
+                        charDelay: 90
                     }
                 );
             }
         }
-
 
         function startBirthdayAnimation() {
             if (bookPage) {
