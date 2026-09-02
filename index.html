@@ -127,20 +127,20 @@
 
         .frame .gift-frame.img-left {
             left: 0;
-            transform: translateX(-50px);
+            transform: translateX(-60px);
             animation: giftFrameFadeLeft 1.2s cubic-bezier(0.22, 1, 0.36, 1) 3.1s forwards;
         }
 
         .frame .gift-frame.img-right {
             right: 0;
-            transform: translateX(50px);
+            transform: translateX(60px);
             animation: giftFrameFadeRight 1.2s cubic-bezier(0.22, 1, 0.36, 1) 3.1s forwards;
         }
 
         @keyframes giftFrameFadeLeft {
             0% {
                 opacity: 0;
-                transform: translateX(-50px);
+                transform: translateX(-60px);
             }
 
             100% {
@@ -152,7 +152,7 @@
         @keyframes giftFrameFadeRight {
             0% {
                 opacity: 0;
-                transform: translateX(50px);
+                transform: translateX(60px);
             }
 
             100% {
@@ -534,6 +534,21 @@
                 aspect-ratio: 9 / 16;
                 border-radius: 26px;
                 border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+        }
+
+        @media screen and (max-width:380px) {
+            .frame .frame-img.two {
+                width: calc(100% - 120px);
+            }
+
+            .frame .gift-bottom {
+                width: 170px;
+            }
+
+            .cover-icon {
+                width: 80px;
+                height: 80px;
             }
         }
     </style>
